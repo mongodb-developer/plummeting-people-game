@@ -1,0 +1,20 @@
+{
+    "_id": "fallguy1000",
+    "email": "test@example.com",
+    "password": "pass123",
+    "firstname": "Nic",
+    "lastname": "Raboy",
+    "location": {
+        "type": "Point",
+        "coordinates": [ -121, 37 ]
+    },
+    "stats": {
+        "wins": 10,
+        "losses": 32,
+        "total_games": 50,
+        "xp": 9483593,
+        "falls": 234,
+        "steps": 349583456
+    },
+    "ip": "127.0.0.1"
+}
