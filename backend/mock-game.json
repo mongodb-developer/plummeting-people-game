@@ -16,5 +16,10 @@
             "falls": 6,
             "elapsed_time": 234358
         }
-    ]
+    ],
+    "arena": "walls",
+    "status": "matchmaking",
+    "created_at": 234534534,
+    "matched_at": 3453454305,
+    "completed_at": 48943654
 }
