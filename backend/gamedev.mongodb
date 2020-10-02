@@ -1,0 +1,65 @@
+use('plummeting-people');
+
+// db.plummies.drop();
+
+db.plummies.insertOne({
+    "_id": "adrienne", // player name
+    "xp": 298347234,
+    "falls": 328945783957,
+    "steps": 4385793485734895,
+    "collisions": 2345325,
+    "losses": 3485,
+    "wins": 3,
+    "created_at": 3498534,
+    "updated_at": 4534534,
+    "lifetime_hours_played": 5,
+    "pineapples": 24532, // Currency
+    "achievements": [
+        {
+            "name": "Super Amazing Person",
+            "timestamp": 2345435
+        }
+    ],
+    "inventory": {
+        "outfits": [
+            {
+                "id": 34345,
+                "name": "The Kilawatt Huaulme",
+                "timestamp": 2345345
+            }
+        ]
+    }
+});
+
+use('plummeting-people');
+
+db.plummies.insertOne({
+    "_id": "nraboy", // player name
+    "xp": 298347234,
+    "falls": 45654,
+    "steps": 234234,
+    "collisions": 345453,
+    "losses": 1,
+    "wins": 3234,
+    "created_at": 3498534,
+    "updated_at": 4534534,
+    "lifetime_hours_played": 5,
+    "pineapples": 435436, // Currency
+    "achievements": [
+        {
+            "name": "Super Amazing Person",
+            "timestamp": 2345435
+        }
+    ],
+    "inventory": {
+        "outfits": [
+            {
+                "id": 34345,
+                "name": "The Kilawatt Huaulme",
+                "timestamp": 2345345
+            }
+        ]
+    } 
+})
+
+db.plummies.find({});
