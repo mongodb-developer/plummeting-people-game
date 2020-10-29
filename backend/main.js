@@ -3,7 +3,7 @@ const Express = require("express");
 const BodyParser = require('body-parser');
 
 const server = Express();
-const client = new MongoClient("mongodb+srv://<username>:<password>@plummeting-us-east-1.hrrxc.mongodb.net/<dbname>");
+const client = new MongoClient(process.env["ATLAS_URI"]);
 
 server.use(BodyParser.json());
 server.use(BodyParser.urlencoded({ extended: true }));

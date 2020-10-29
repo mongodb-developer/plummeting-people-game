@@ -1,4 +1,7 @@
 ﻿using UnityEngine;
+using System.Text;
+using UnityEngine.Networking;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
@@ -7,51 +10,89 @@ public class Player : MonoBehaviour
 
     private Rigidbody2D rigidBody2D;
     private Vector2 movement;
+    private PlayerData playerData;
 
-    // Start is called before the first frame update
     void Start()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+        // playerData = GetComponent<PlayerData>();
+        playerData = new PlayerData();
+        playerData.plummie_tag = "atacke";
+        StartCoroutine(Download(playerData.plummie_tag, result => {
+            Debug.Log(result);
+        }));
     }
 
-    // Update is called once per frame
     void Update()
     {
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
         movement = new Vector2(h * speed, v * speed);
-        // if(Input.GetKey("w")) {
-        //     transform.position += Vector3.up * speed * Time.deltaTime;
-        // }
-        // if(Input.GetKey("s")) {
-        //     transform.position += Vector3.down * speed * Time.deltaTime;
-        // }
-        // if(Input.GetKey("a")) {
-        //     transform.position += Vector3.left * speed * Time.deltaTime;
-        // }
-        // if(Input.GetKey("d")) {
-        //     transform.position += Vector3.right * speed * Time.deltaTime;
-        // }
-
-        // if(transform.position.y > 5.0f) {
-        //     transform.position = new Vector2(transform.position.x, -5.0f);
-        // }
     }
 
     void FixedUpdate() {
         rigidBody2D.velocity = movement;
-        // if(Input.GetKey("w")) {
-        //     rigidBody2D.AddForce(Vector3.up * speed);
-        // }
-        // if(Input.GetKey("s")) {
-        //     rigidBody2D.AddForce(Vector3.down * speed);
-        // }
-        // if(Input.GetKey("a")) {
-        //     rigidBody2D.AddForce(Vector3.left * speed);
-        // }
-        // if(Input.GetKey("d")) {
-        //     rigidBody2D.AddForce(Vector3.right * speed);
-        // }
+
+        if(rigidBody2D.position.x > 24.0f) {
+            StartCoroutine(Upload(playerData.Stringify(), result => {
+                Debug.Log(result);
+            }));
+        }
+    }
+
+    void OnCollisionEnter2D(Collision2D collision) {
+        playerData.collisions++;
+    }
+
+    IEnumerator Download(string id, System.Action<PlayerData> callback = null)
+    {
+        using (UnityWebRequest request = UnityWebRequest.Get("http://localhost:3000/plummies/" + id))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Debug.Log(request.error);
+                if (callback != null)
+                {
+                    callback.Invoke(null);
+                }
+            }
+            else
+            {
+                if (callback != null)
+                {
+                    callback.Invoke(PlayerData.Parse(request.downloadHandler.text));
+                }
+            }
+        }
+    }
+
+    IEnumerator Upload(string profile, System.Action<bool> callback = null)
+    {
+        using (UnityWebRequest request = new UnityWebRequest("http://localhost:3000/plummies", "POST"))
+        {
+            request.SetRequestHeader("Content-Type", "application/json");
+            byte[] bodyRaw = Encoding.UTF8.GetBytes(profile);
+            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+            request.downloadHandler = new DownloadHandlerBuffer();
+            yield return request.SendWebRequest();
+
+            if (request.isNetworkError || request.isHttpError)
+            {
+                Debug.Log(request.error);
+                if(callback != null) {
+                    callback.Invoke(false);
+                }
+            }
+            else
+            {
+                // Debug.Log(request.downloadHandler.text);
+                if(callback != null) {
+                    callback.Invoke(request.downloadHandler.text != "{}");
+                }
+            }
+        }
     }
 
 }
