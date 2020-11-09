@@ -11,10 +11,12 @@ public class Player : MonoBehaviour
     private Rigidbody2D rigidBody2D;
     private Vector2 movement;
     private PlayerData playerData;
+    private bool isGameOver;
 
     void Start()
     {
         rigidBody2D = GetComponent<Rigidbody2D>();
+        isGameOver = false;
         // playerData = GetComponent<PlayerData>();
         playerData = new PlayerData();
         playerData.plummie_tag = "atacke";
@@ -33,10 +35,11 @@ public class Player : MonoBehaviour
     void FixedUpdate() {
         rigidBody2D.velocity = movement;
 
-        if(rigidBody2D.position.x > 24.0f) {
+        if(rigidBody2D.position.x > 24.0f && isGameOver == false) {
             StartCoroutine(Upload(playerData.Stringify(), result => {
                 Debug.Log(result);
             }));
+            isGameOver = true;
         }
     }
 
