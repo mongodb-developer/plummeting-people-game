@@ -18,7 +18,7 @@ public class DoorManager : MonoBehaviour
         }
         for(int i = 0; i < _doorCount; i++) {
             GameObject doorGameObject = transform.GetChild(i).gameObject;
-            doorGameObject.GetComponent<Door>().isFakeDoor = _randomDoors.Contains(i);
+            doorGameObject.GetComponent<Door>().SetIsFakeDoor(_randomDoors.Contains(i));
         }
     }
 

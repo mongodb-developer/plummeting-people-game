@@ -19,8 +19,8 @@ public class Player : MonoBehaviour
         rigidBody2D = GetComponent<Rigidbody2D>();
         // playerData = GetComponent<PlayerData>();
         playerData = new PlayerData();
-        playerData.plummie_tag = "atacke";
-        StartCoroutine(Download(playerData.plummie_tag, result => {
+        playerData.plummie_tag = "nraboy";
+        StartCoroutine(playerData.FetchPlayerData(result => {
             Debug.Log(result);
         }));
     }
@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         rigidBody2D.velocity = movement;
 
         if(rigidBody2D.position.x > 24.0f && _isGameOver == false) {
-            StartCoroutine(Upload(playerData.Stringify(), result => {
+            StartCoroutine(playerData.SavePlayerData(result => {
                 Debug.Log(result);
             }));
             _isGameOver = true;
@@ -47,55 +47,55 @@ public class Player : MonoBehaviour
         playerData.collisions++;
     }
 
-    IEnumerator Download(string id, System.Action<PlayerData> callback = null)
-    {
-        using (UnityWebRequest request = UnityWebRequest.Get("http://localhost:3000/plummies/" + id))
-        {
-            yield return request.SendWebRequest();
+    // IEnumerator Download(string id, System.Action<PlayerData> callback = null)
+    // {
+    //     using (UnityWebRequest request = UnityWebRequest.Get("http://localhost:3000/plummies/" + id))
+    //     {
+    //         yield return request.SendWebRequest();
 
-            if (request.isNetworkError || request.isHttpError)
-            {
-                Debug.Log(request.error);
-                if (callback != null)
-                {
-                    callback.Invoke(null);
-                }
-            }
-            else
-            {
-                if (callback != null)
-                {
-                    callback.Invoke(PlayerData.Parse(request.downloadHandler.text));
-                }
-            }
-        }
-    }
+    //         if (request.isNetworkError || request.isHttpError)
+    //         {
+    //             Debug.Log(request.error);
+    //             if (callback != null)
+    //             {
+    //                 callback.Invoke(null);
+    //             }
+    //         }
+    //         else
+    //         {
+    //             if (callback != null)
+    //             {
+    //                 callback.Invoke(PlayerData.Parse(request.downloadHandler.text));
+    //             }
+    //         }
+    //     }
+    // }
 
-    IEnumerator Upload(string profile, System.Action<bool> callback = null)
-    {
-        using (UnityWebRequest request = new UnityWebRequest("http://localhost:3000/plummies", "POST"))
-        {
-            request.SetRequestHeader("Content-Type", "application/json");
-            byte[] bodyRaw = Encoding.UTF8.GetBytes(profile);
-            request.uploadHandler = new UploadHandlerRaw(bodyRaw);
-            request.downloadHandler = new DownloadHandlerBuffer();
-            yield return request.SendWebRequest();
+    // IEnumerator Upload(string profile, System.Action<bool> callback = null)
+    // {
+    //     using (UnityWebRequest request = new UnityWebRequest("http://localhost:3000/plummies", "POST"))
+    //     {
+    //         request.SetRequestHeader("Content-Type", "application/json");
+    //         byte[] bodyRaw = Encoding.UTF8.GetBytes(profile);
+    //         request.uploadHandler = new UploadHandlerRaw(bodyRaw);
+    //         request.downloadHandler = new DownloadHandlerBuffer();
+    //         yield return request.SendWebRequest();
 
-            if (request.isNetworkError || request.isHttpError)
-            {
-                Debug.Log(request.error);
-                if(callback != null) {
-                    callback.Invoke(false);
-                }
-            }
-            else
-            {
-                // Debug.Log(request.downloadHandler.text);
-                if(callback != null) {
-                    callback.Invoke(request.downloadHandler.text != "{}");
-                }
-            }
-        }
-    }
+    //         if (request.isNetworkError || request.isHttpError)
+    //         {
+    //             Debug.Log(request.error);
+    //             if(callback != null) {
+    //                 callback.Invoke(false);
+    //             }
+    //         }
+    //         else
+    //         {
+    //             // Debug.Log(request.downloadHandler.text);
+    //             if(callback != null) {
+    //                 callback.Invoke(request.downloadHandler.text != "{}");
+    //             }
+    //         }
+    //     }
+    // }
 
 }
