@@ -1,0 +1,25 @@
+{
+    "_id": "92348572",
+    "players": [ "fallguy1000", "fallguy1234" ],
+    "messages": [
+        {
+            "sender": "fallguy1000",
+            "message": "Hello World",
+            "timestamp": 102394345
+        }
+    ],
+    "rank": [
+        {
+            "player": "fallguy1000",
+            "position": 1,
+            "steps": 234,
+            "falls": 6,
+            "elapsed_time": 234358
+        }
+    ],
+    "arena": "walls",
+    "status": "matchmaking",
+    "created_at": 234534534,
+    "matched_at": 3453454305,
+    "completed_at": 48943654
+}
